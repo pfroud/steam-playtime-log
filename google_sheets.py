@@ -66,12 +66,11 @@ def main():
     discovery_url = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
     service = discovery.build('sheets', 'v4', http = http, discoveryServiceUrl = discovery_url)
 
-    json = {
-        "requests": {"appendCells": {"sheetId": 0, "rows": [{"values": [
-            {"userEnteredValue": {"stringValue": "235235"}},
-            {"userEnteredValue": {"stringValue": "bla"}},
-            {"userEnteredValue": {"stringValue": "cvncmnvcmvncmvnc"}}
-        ]}], "fields": "*"}}}
+    json = {"requests": {"appendCells": {"sheetId": 0, "rows": [{"values": [
+        {"userEnteredValue": {"stringValue": "235235"}},
+        {"userEnteredValue": {"stringValue": "bla"}},
+        {"userEnteredValue": {"stringValue": "cvncmnvcmvncmvnc"}}
+    ]}], "fields": "*"}}}
 
     spreadsheet_id = '1xSOC2HNoV_e6uCTnorLh-9j4iHQS7UDnkwNFD2aMuvw'
     result = service.spreadsheets().batchUpdate(body = json, spreadsheetId = spreadsheet_id).execute()
