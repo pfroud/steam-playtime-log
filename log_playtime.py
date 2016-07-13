@@ -1,38 +1,47 @@
 import requests
 from datetime import datetime
 
-id_to_name = {43110: "name_of_game",
-              265630: "other_name_of_game"}
-delimiter = ', '
 
-
-def save_local(game_object):
+def save_locally(game_obj):
     """
-    Saves playtime to a local file.
-    :param game_object:
+    Saves playtime for one game to a local log file.
+    :param game_obj: dict (from json object) with game and playtime information
+    :type game_obj: dict
     """
-    app_id = game_object['appid']
-    filename = "out/{} {}.txt".format(app_id, id_to_name[app_id])
+    path = 'out/{} {}.txt'.format(game_obj['appid'], game_obj['name'])
     now = datetime.now()
+    with open(path, 'w+') as f:
+        row = [now.date(), now.time(), game_obj['playtime_forever']]
+        row = map(str, row)
+        f.write(', '.join(row))
 
-    with open(filename, "w+") as f:
-        f.write("{date}{_}{time}{_}{appid}{_}{playtime}\n".format(
-            _ = delimiter,
-            date = now.date(),
-            time = now.time(),
-            appid = app_id,
-            playtime = game_object['playtime_forever']
-        ))
 
-with open('steam_api_key.txt', 'r') as f:
-    api_key = f.read()
+def get_owned_games(steamid_, appids):
+    """
+    Returns dict with information about owned games.
+    :param steamid_: SteamID of user
+    :param appids: list of appids of the games to log time of
+    :type steamid_: int
+    :type appids: list
+    :return: dict
+    """
+    with open('steam_api_key.txt', 'r') as f:
+        api_key = f.read()
 
-url = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={api_key}&steamid={steam_id}". \
-    format(api_key = api_key, steam_id = "76561198024958891")  # replace with your steam id
+    appids_filter_array = ''
+    for index, appid in enumerate(appids):
+        appids_filter_array += '&appids_filter[{}]={}'.format(index, appid)
 
-r = requests.get(url)
-response = r.json()
+    # https://developer.valvesoftware.com/wiki/Steam_Web_API#GetOwnedGames_.28v0001.29
+    url = 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={}&steamid={}&include_appinfo=1{}'. \
+        format(api_key, steamid_, appids_filter_array)
 
-for game in response['response']['games']:
-    if game['appid'] in id_to_name.keys():
-        save_local(game)
+    r = requests.get(url)
+    r.raise_for_status()
+    return r.json()
+
+
+steamid = 76561198024958891  # replace with your steamID
+appids_to_log = [43110, 265630]
+for game in get_owned_games(steamid, appids_to_log)['response']['games']:
+    save_locally(game)
