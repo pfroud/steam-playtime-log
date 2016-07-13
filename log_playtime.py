@@ -1,19 +1,5 @@
 import requests
-from datetime import datetime
-
-
-def save_locally(game_obj):
-    """
-    Saves playtime for one game to a local log file.
-    :param game_obj: dict (from json object) with game and playtime information
-    :type game_obj: dict
-    """
-    path = 'out/{} {}.txt'.format(game_obj['appid'], game_obj['name'])
-    now = datetime.now()
-    with open(path, 'w+') as f:
-        row = [now.date(), now.time(), game_obj['playtime_forever']]
-        row = map(str, row)
-        f.write(', '.join(row))
+from google_sheets import save_to_sheets
 
 
 def get_owned_games(steamid_, appids):
@@ -41,7 +27,23 @@ def get_owned_games(steamid_, appids):
     return r.json()
 
 
+def save_locally(game_obj):
+    """
+    Saves playtime for one game to a local log file.
+    :param game_obj: dict (from json object) with game and playtime information
+    :type game_obj: dict
+    """
+    from datetime import datetime
+    path = 'out/{} {}.txt'.format(game_obj['appid'], game_obj['name'])
+    now = datetime.now()
+    with open(path, 'w+') as f:
+        row = [now.date(), now.time(), game_obj['playtime_forever']]
+        row = map(str, row)
+        f.write(', '.join(row))
+
+
 steamid = 76561198024958891  # replace with your steamID
 appids_to_log = [43110, 265630]
 for game in get_owned_games(steamid, appids_to_log)['response']['games']:
-    save_locally(game)
+    # save_locally(game)
+    save_to_sheets(game)

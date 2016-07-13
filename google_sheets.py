@@ -8,6 +8,8 @@ from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 
+# most of this file from https://developers.google.com/sheets/quickstart/python
+
 try:
     import argparse
 
@@ -16,10 +18,10 @@ except ImportError:
     flags = None
 
 # If modifying these scopes, delete your previously saved credentials
-# at ~/.credentials/sheets.googleapis.com-python-quickstart.json
+# at ~/.credentials/sheets.googleapis.com-steam-playtime.json
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
 CLIENT_SECRET_FILE = 'client_secret.json'
-APPLICATION_NAME = 'Google Sheets API Python Quickstart'
+APPLICATION_NAME = 'Steam playtime logger'
 
 
 def get_credentials():
@@ -36,7 +38,7 @@ def get_credentials():
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
     credential_path = os.path.join(credential_dir,
-                                   'sheets.googleapis.com-python-quickstart.json')
+                                   'sheets.googleapis.com-steam-playtime.json')
 
     store = oauth2client.file.Storage(credential_path)
     credentials = store.get()
@@ -51,30 +53,27 @@ def get_credentials():
     return credentials
 
 
-# https://developers.google.com/sheets/guides/batchupdate
-# https://developers.google.com/sheets/reference/rest/v4/spreadsheets/request#appendcellsrequest
-
-def main():
-    """Shows basic usage of the Sheets API.
-
-    Creates a Sheets API service object and prints the names and majors of
-    students in a sample spreadsheet:
-    https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+def save_to_sheets(game_obj):
+    """
+    Saves playtime for one game to Google Sheets.
+    :param game_obj: dict (from json object) with game and playtime information
+    :type game_obj: dict
     """
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     discovery_url = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
     service = discovery.build('sheets', 'v4', http = http, discoveryServiceUrl = discovery_url)
 
+    from datetime import datetime
+    now = datetime.now()
+
+    # completely moronic json
     json = {"requests": {"appendCells": {"sheetId": 0, "rows": [{"values": [
-        {"userEnteredValue": {"stringValue": "235235"}},
-        {"userEnteredValue": {"stringValue": "bla"}},
-        {"userEnteredValue": {"stringValue": "cvncmnvcmvncmvnc"}}
+        {"userEnteredValue": {"stringValue": str(now.date())}},
+        {"userEnteredValue": {"stringValue": str(now.time())}},
+        {"userEnteredValue": {"numberValue": game_obj['playtime_forever']}},
     ]}], "fields": "*"}}}
 
     spreadsheet_id = '1xSOC2HNoV_e6uCTnorLh-9j4iHQS7UDnkwNFD2aMuvw'
-    result = service.spreadsheets().batchUpdate(body = json, spreadsheetId = spreadsheet_id).execute()
-
-
-if __name__ == '__main__':
-    main()
+    # https://developers.google.com/sheets/reference/rest/v4/spreadsheets/request#appendcellsrequest
+    service.spreadsheets().batchUpdate(body = json, spreadsheetId = spreadsheet_id).execute()
