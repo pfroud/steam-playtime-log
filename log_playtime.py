@@ -1,6 +1,7 @@
 import requests
 from google_sheets import save_to_sheets
 from pprint import pprint
+import json
 
 
 def get_owned_games(steamid, appids):
@@ -40,10 +41,11 @@ def get_owned_games(steamid, appids):
     # with no mention of Services or JSON. This is the only way that works, so that's what I do here.
     for index, appid in enumerate(appids):
         key = "appids_filter[{}]".format(index)
-        params[key] = appid
+        #params[key] = appid
 
     r = requests.get("http://api.steampowered.com/IPlayerService/GetOwnedGames/v1/", params=params)
     r.raise_for_status()
+    print(json.dumps(r.json(), indent=4, sort_keys=True))
     return r.json()
 
 
@@ -67,8 +69,9 @@ def main():
     steamid = 76561198024958891  # put your steamID here, and check out my sweet profile if you want
     appids_to_log = [43110, 265630]
     for game in get_owned_games(steamid, appids_to_log)['response']['games']:
+        pass
         # save_locally(game)
-        save_to_sheets(game)
+        # save_to_sheets(game)
 
 
 main()

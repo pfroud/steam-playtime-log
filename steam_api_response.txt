@@ -1,27 +1,94 @@
 {
-	"response": {
-		"game_count": 5,
-		"games": [
-			{
-				"appid": 43110,
-				"playtime_forever": 5
-			},
-			{
-				"appid": 400,
-				"playtime_forever": 3
-			},
-			{
-				"appid": 203630,
-				"playtime_forever": 0
-			},
-			{
-				"appid": 265630,
-				"playtime_forever": 7
-			},
-			{
-				"appid": 257730,
-				"playtime_forever": 0
-			}
-		]
-	}
+    "response": {
+        "game_count": 11,
+        "games": [
+            {
+                "appid": 43110,
+                "has_community_visible_stats": true,
+                "img_icon_url": "a70fe6dc214f24107d20596f3040dbfa220ed42d",
+                "img_logo_url": "df9a163ac1f28dfc84c93a6fc0dc51719eaef518",
+                "name": "Metro 2033",
+                "playtime_forever": 0
+            },
+            {
+                "appid": 400,
+                "has_community_visible_stats": true,
+                "img_icon_url": "cfa928ab4119dd137e50d728e8fe703e4e970aff",
+                "img_logo_url": "4184d4c0d915bd3a45210667f7b25361352acd8f",
+                "name": "Portal",
+                "playtime_forever": 3
+            },
+            {
+                "appid": 203630,
+                "has_community_visible_stats": true,
+                "img_icon_url": "540410e6c4528bb8e2ac38d54e6f7e49129a12bb",
+                "img_logo_url": "4240e3ce4448d5ae9f8fef327d7d6cfa24713ee0",
+                "name": "Warlock - Master of the Arcane",
+                "playtime_forever": 0
+            },
+            {
+                "appid": 265630,
+                "has_community_visible_stats": true,
+                "img_icon_url": "e70c19e10125ea3f221666327af2b90f3fcecad9",
+                "img_logo_url": "45ba88467785ebd77384e4b386abac1bfdad785b",
+                "name": "Fistful of Frags",
+                "playtime_forever": 0
+            },
+            {
+                "appid": 257730,
+                "has_community_visible_stats": true,
+                "img_icon_url": "45a7c18391d0ee707088941df3ebfecb19cbb004",
+                "img_logo_url": "3debd52cba8bcae1beb0457002ed1763fe22b1b1",
+                "name": "Infinity Wars - Animated Trading Card Game",
+                "playtime_forever": 0
+            },
+            {
+                "appid": 234390,
+                "has_community_visible_stats": true,
+                "img_icon_url": "555ec0ee9fb0ce13dc57450f2731b6b474ab11ee",
+                "img_logo_url": "2aaffcf9578f1eace6a68b0623f04971a0572e8a",
+                "name": "Teleglitch: Die More Edition",
+                "playtime_forever": 0
+            },
+            {
+                "appid": 550,
+                "has_community_visible_stats": true,
+                "img_icon_url": "7d5a243f9500d2f8467312822f8af2a2928777ed",
+                "img_logo_url": "205863cc21e751a576d6fff851984b3170684142",
+                "name": "Left 4 Dead 2",
+                "playtime_forever": 0
+            },
+            {
+                "appid": 223530,
+                "img_icon_url": "",
+                "img_logo_url": "",
+                "name": "Left 4 Dead 2 Beta",
+                "playtime_forever": 0
+            },
+            {
+                "appid": 304930,
+                "has_community_visible_stats": true,
+                "img_icon_url": "e18009fb628b35953826efe47dc3be556b689f4c",
+                "img_logo_url": "32b7ea686e0fb11e24008e4dab179a40a6b2eb09",
+                "name": "Unturned",
+                "playtime_forever": 169
+            },
+            {
+                "appid": 63380,
+                "has_community_visible_stats": true,
+                "img_icon_url": "0092da2541424d4c1d10c1757dcb8104c37323ac",
+                "img_logo_url": "382d7f4a6eff4896ff4d137f0906735c99bd0300",
+                "name": "Sniper Elite V2",
+                "playtime_forever": 0
+            },
+            {
+                "appid": 440,
+                "has_community_visible_stats": true,
+                "img_icon_url": "e3f595a92552da3d664ad00277fad2107345f743",
+                "img_logo_url": "07385eb55b5ba974aebbe74d3c99626bda7920b8",
+                "name": "Team Fortress 2",
+                "playtime_forever": 525
+            }
+        ]
+    }
 }
