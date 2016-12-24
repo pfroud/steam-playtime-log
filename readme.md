@@ -31,7 +31,7 @@ Steam shows playtimes in the web interface, so you could scrape the data from th
 `http://steamcommunity.com/profiles/xxxxxxxxxxxxxxxxx/games/?tab=all`:
 
 <p align="center" style="text-align: center">
-<img src="timeOnRecord.png?raw=true" alt="Steam playtime on record">
+<img src="time_on_record.png?raw=true" alt="Steam playtime on record">
 </p>
 
 But we can bypass this step by using the [Steam API](https://developer.valvesoftware.com/wiki/Steam_Web_API). You can see what output from the API looks like in [`steam_api_response.txt`](steam_api_response.txt).
