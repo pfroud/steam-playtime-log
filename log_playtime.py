@@ -1,18 +1,17 @@
 import requests
 from google_sheets import save_to_sheets
-from pprint import pprint
-import json
 
 
 def get_owned_games(steamid, appids):
     """
-    Returns a dict with information about owned games.
+    Queries the Steam API for info about the specified games owned by the specified user.
+    Look at steam_api_response.txt to see how the response is structured.
 
-    :param steamid: the SteamID of the user who owns
+    :param steamid: the SteamID of the user who owns the games
     :type steamid: int
-    :param appids: appids of the games to log time of
+    :param appids: IDs of the Steam apps to get info about
     :type appids: list
-    :return: a dictionary of games the user owns
+    :return: a dictionary (JSON) containing game information
     :rtype: dict
     """
 
@@ -41,17 +40,16 @@ def get_owned_games(steamid, appids):
     # with no mention of Services or JSON. This is the only way that works, so that's what I do here.
     for index, appid in enumerate(appids):
         key = "appids_filter[{}]".format(index)
-        #params[key] = appid
+        params[key] = appid
 
     r = requests.get("http://api.steampowered.com/IPlayerService/GetOwnedGames/v1/", params=params)
     r.raise_for_status()
-    print(json.dumps(r.json(), indent=4, sort_keys=True))
     return r.json()
 
 
 def save_locally(game_obj):
     """
-    Saves playtime for one game to a local log file.
+    Writes playtime for one game to a text file.
 
     :param game_obj: dict (from json object) with game and playtime information
     :type game_obj: dict
@@ -66,11 +64,15 @@ def save_locally(game_obj):
 
 
 def main():
-    steamid = 76561198024958891  # put your steamID here, and check out my sweet profile if you want
-    appids_to_log = [43110, 265630]
-    for game in get_owned_games(steamid, appids_to_log)['response']['games']:
-        pass
-        # save_locally(game)
+    """
+
+    """
+    steamid = 76561198024958891  # your steamID here
+    appids_to_log = [43110, 265630]  # customize appIDs here
+
+    api_response = get_owned_games(steamid, appids_to_log)
+    for game in api_response['response']['games']:
+        save_locally(game)
         # save_to_sheets(game)
 
 
