@@ -66,7 +66,6 @@ def save_locally(game_obj: dict) -> None:
 
     with open(path, 'a') as f:
         if write_header:
-            f.write(f'"{appid}", "{name}"\n')
             f.write('"Date", "Time", "Playtime (minutes)"\n')
 
         row = [now.date(), now.time(), game_obj['playtime_forever']]
