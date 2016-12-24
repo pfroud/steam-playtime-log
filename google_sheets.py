@@ -1,7 +1,4 @@
-from __future__ import print_function
-
 import os
-
 import httplib2
 import oauth2client
 from apiclient import discovery
@@ -13,7 +10,7 @@ from oauth2client import tools
 try:
     import argparse
 
-    flags = argparse.ArgumentParser(parents = [tools.argparser]).parse_args()
+    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
 except ImportError:
     flags = None
 
@@ -62,18 +59,55 @@ def save_to_sheets(game_obj):
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     discovery_url = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
-    service = discovery.build('sheets', 'v4', http = http, discoveryServiceUrl = discovery_url)
+    service = discovery.build('sheets', 'v4', http=http, discoveryServiceUrl=discovery_url)
 
     from datetime import datetime
     now = datetime.now()
 
-    # completely moronic json
-    json = {"requests": {"appendCells": {"sheetId": 0, "rows": [{"values": [
-        {"userEnteredValue": {"stringValue": str(now.date())}},
-        {"userEnteredValue": {"stringValue": str(now.time())}},
-        {"userEnteredValue": {"numberValue": game_obj['playtime_forever']}},
-    ]}], "fields": "*"}}}
+    # Behold the amount of JSON it takes to add three numbers to a spreadsheet. Six nested objects. Read all about it:
+    # https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets/batchUpdate
+    # https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets/request#request
+    # https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets/request#appendcellsrequest
+    # https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets#RowData
+    # https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets#CellData
+    # https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets#ExtendedValue
+    # Yes, every oen of those structures is required. I couldn't make this up.
+    # I have commented each object with its type to make it easier to follow along.
+    json = {
+        # batchUpdate
+        "requests": {
+            # Request
+            "appendCells": {
+                # AppendCellsRequest
+                "sheetId": 0,
+                "rows": [{
+                    # RowData
+                    "values": [{
+                        # CellData
+                        "userEnteredValue": {
+                            # ExtendedValue
+                            "stringValue": str(now.date())
+                        }
+                    }, {
+                        # CellData
+                        "userEnteredValue": {
+                            # ExtendedValue
+                            "stringValue": str(now.time())
+                        }
+                    }, {
+                        # CellData
+                        "userEnteredValue": {
+                            # ExtendedValue
+                            "numberValue": game_obj['playtime_forever']
+                        }
+                    },
+                    ]
+                }],
+                "fields": "*"
+            }
+        }
+    }
 
-    spreadsheet_id = '1xSOC2HNoV_e6uCTnorLh-9j4iHQS7UDnkwNFD2aMuvw'
+    spreadsheet_id = "1xSOC2HNoV_e6uCTnorLh-9j4iHQS7UDnkwNFD2aMuvw"
     # https://developers.google.com/sheets/reference/rest/v4/spreadsheets/request#appendcellsrequest
-    service.spreadsheets().batchUpdate(body = json, spreadsheetId = spreadsheet_id).execute()
+    service.spreadsheets().batchUpdate(body=json, spreadsheetId=spreadsheet_id).execute()

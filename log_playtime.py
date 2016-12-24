@@ -3,7 +3,7 @@ import requests
 from google_sheets import save_to_sheets
 
 
-def get_owned_games(steamid: int, appids: List[str]) -> dict:
+def get_owned_games(steamid: int, appids: List[int]) -> dict:
     """
     Queries the Steam API for info about the specified games owned by the specified user.
     Look at steam_api_response.txt to see how the response is structured.
@@ -50,7 +50,7 @@ def get_owned_games(steamid: int, appids: List[str]) -> dict:
 
 def save_locally(game_obj: dict) -> None:
     """
-    Writes playtime for one game to a text file.
+    Writes playtime for one game to a local text file.
 
     :param game_obj: dict (from json object) with game and playtime information
     :type game_obj: dict
@@ -65,9 +65,7 @@ def save_locally(game_obj: dict) -> None:
 
 
 def main():
-    """
-
-    """
+    """Logs info about games to a local text file and/or to Google Sheets."""
     steamid = 76561198024958891  # your steamID here
     appids_to_log = [43110, 265630]  # customize appIDs here
 
