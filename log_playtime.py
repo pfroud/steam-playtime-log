@@ -42,7 +42,7 @@ def get_owned_games(steamid: int, appids: List[int]) -> dict:
     # "This is an array and should be passed like appids_filter[0]=440&appids_filter[1]=570"
     # with no mention of Services or JSON. This is the only way that works, so that's what I do here.
     for index, appid in enumerate(appids):
-        key = "appids_filter[{}]".format(index)
+        key = f"appids_filter[{index}]"
         params[key] = appid
 
     r = requests.get("http://api.steampowered.com/IPlayerService/GetOwnedGames/v1/", params=params)
@@ -60,7 +60,7 @@ def save_locally(game_obj: dict) -> None:
 
     appid = game_obj['appid']
     name = game_obj['name']
-    path = 'out/[{}] {}.txt'.format(appid, name)
+    path = f'out/[{appid}] {name}.txt'
     now = datetime.now()
     write_header = not isfile(path)
 
