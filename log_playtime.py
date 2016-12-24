@@ -1,5 +1,7 @@
 from typing import List
 import requests
+from os.path import isfile
+from datetime import datetime
 from google_sheets import save_to_sheets
 
 
@@ -50,24 +52,33 @@ def get_owned_games(steamid: int, appids: List[int]) -> dict:
 
 def save_locally(game_obj: dict) -> None:
     """
-    Writes playtime for one game to a local text file.
+    Writes playtime for one game to a local text file in out/.
 
     :param game_obj: dict (from json object) with game and playtime information
     :type game_obj: dict
     """
-    from datetime import datetime
-    path = 'out/{} {}.txt'.format(game_obj['appid'], game_obj['name'])
+
+    appid = game_obj['appid']
+    name = game_obj['name']
+    path = 'out/[{}] {}.txt'.format(appid, name)
     now = datetime.now()
-    with open(path, 'w+') as f:
+    write_header = not isfile(path)
+
+    with open(path, 'a') as f:
+        if write_header:
+            f.write(f'"{appid}", "{name}"\n')
+            f.write('"Date", "Time", "Playtime (minutes)"\n')
+
         row = [now.date(), now.time(), game_obj['playtime_forever']]
         row = map(str, row)
-        f.write(', '.join(row))
+        row = map(lambda s: f'"{s}"', row)  # wrap each string in quotes
+        f.write(', '.join(row) + "\n")
 
 
 def main():
     """Logs info about games to a local text file and/or to Google Sheets."""
     steamid = 76561198024958891  # your steamID here
-    appids_to_log = [43110, 265630]  # customize appIDs here
+    appids_to_log = [440, 304930]  # customize appIDs here
 
     api_response = get_owned_games(steamid, appids_to_log)
     for game in api_response['response']['games']:
