@@ -2,6 +2,19 @@
 
 Logs playtime of Steam games to a local text file and/or to a Google Sheets spreadsheet.
 
+## Background
+
+The target application is VR arcades, where game developers want to know how much their game is being played.
+
+Steam shows playtimes in the web interface, so you could scrape the data from the webpage. Here's the display on [my very actiev Steam profile:](https://steamcommunity.com/profiles/76561198024958891/games/?tab=all)
+
+<p align="center" style="text-align: center">
+<img src="time_on_record.png?raw=true" alt="Steam playtime on record">
+</p>
+
+But we get this data irectly by using the [Steam API](https://developer.valvesoftware.com/wiki/Steam_Web_API). You can see what output from the API looks like in [`steam_api_response.txt`](steam_api_response.txt).
+
+
 ## Usage
 
 1. Get a Steam API key at http://steamcommunity.com/dev/apikey and put it in [`steamid`](log_playtime.py#L79)
@@ -20,18 +33,3 @@ Logs playtime of Steam games to a local text file and/or to a Google Sheets spre
     "2016-12-23", "22:16:18.869231", "525"
    ```
    * Google Sheets output is similar.
-
-
-
-## Background
-
-The target application was VR arcades, where game developers want to know how much their game is being played.
-
-Steam shows playtimes in the web interface, so you could scrape the data from the webpage. Here's the display at
-`http://steamcommunity.com/profiles/xxxxxxxxxxxxxxxxx/games/?tab=all`:
-
-<p align="center" style="text-align: center">
-<img src="time_on_record.png?raw=true" alt="Steam playtime on record">
-</p>
-
-But we can bypass this step by using the [Steam API](https://developer.valvesoftware.com/wiki/Steam_Web_API). You can see what output from the API looks like in [`steam_api_response.txt`](steam_api_response.txt).
