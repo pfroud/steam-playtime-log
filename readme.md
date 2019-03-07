@@ -12,7 +12,7 @@ Steam shows playtimes in the web interface, so you could scrape the data from th
 <img src="time_on_record.png?raw=true" alt="Steam playtime on record">
 </p>
 
-But we get this data irectly by using the [Steam API](https://developer.valvesoftware.com/wiki/Steam_Web_API). You can see what output from the API looks like in [`steam_api_response.txt`](steam_api_response.txt).
+We get this data directly by using the [Steam API](https://developer.valvesoftware.com/wiki/Steam_Web_API). You can see what output from the API looks like in [`steam_api_response.txt`](steam_api_response.txt).
 
 
 ## Usage
